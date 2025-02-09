@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖 Date Invitation 💖</title>
+   
+</head>
+<body style="text-align: center; font-family: Arial, sans-serif; background-color: #ffe6f2; margin: 50px;">
+
+    <div style="background: white; padding: 20px; border-radius: 10px; width: 350px; margin: auto; box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);">
+        <h2 style="color: #ff1493;">💌 Will You Go on a Date With Me? 💌</h2>
+        <p>Fill in the details and make it special!</p>
+        <h2>
+            <button onclick="window.location.href='inferno3.html';" style="background-color: #ff1493; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">FIND</button>
+        </h2>
+
+        <form id="inviteForm" enctype="multipart/form-data">
+            <label for="name" style="font-weight: bold;">Name:</label><br>
+            <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ff1493;"><br><br>
+
+            <label for="email" style="font-weight: bold;">Email:</label><br>
+            <input type="email" id="email" name="email" required style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ff1493;"><br><br>
+
+            <label for="age" style="font-weight: bold;">Age:</label><br>
+            <input type="number" id="age" name="age" required style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ff1493;"><br><br>
+
+            <label for="location" style="font-weight: bold;">Where Will You Go?</label><br>
+            <input type="text" id="location" name="location" required style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ff1493;"><br><br>
+
+            <label for="picture" style="font-weight: bold;">Upload Your Picture:</label><br>
+            <input type="file" id="picture" name="picture" accept="image/*" required style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ff1493;"><br><br>
+
+            <a href="inferno3.html"><button type="submit" style="width: 100%; padding: 10px; background-color: #ff1493; color: white; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;">
+                💖 Register Here 💖
+            </button>
+            </a>
+
+        </form>
+
+        <div id="responseMessage" style="margin-top: 20px; font-weight: bold;"></div>
+    </div>
+
+    <script>
+        document.getElementById("inviteForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent form from reloading the page
+
+            const formData = new FormData();
+            formData.append("name", document.getElementById("name").value);
+            formData.append("email", document.getElementById("email").value);
+            formData.append("age", document.getElementById("age").value);
+            formData.append("location", document.getElementById("location").value);
+            formData.append("picture", document.getElementById("picture").files[0]);
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/send-invite", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                document.getElementById("responseMessage").innerText = result.message;
+
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("responseMessage").innerText = "Failed to send the invitation.";
+            }
+        });
+    </script>
+
+</body>
+</html>
